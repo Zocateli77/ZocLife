@@ -9,6 +9,7 @@ import {
 } from "date-fns";
 import { DEFAULT_USER_ID } from "@/lib/auth/constants";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { expandRecurringEvent } from "./recurrence";
 import type { CalendarEventWithRelations } from "./types";
 
 function mapEventRow(row: Record<string, unknown>): CalendarEventWithRelations {
@@ -48,27 +49,60 @@ export async function getEventsInRange(
 ): Promise<CalendarEventWithRelations[]> {
   const supabase = createServerSupabaseClient();
 
-  const { data, error } = await supabase
+  // Non-recurring events are matched directly by their start_datetime.
+  const singlePromise = supabase
     .from("calendar_events")
     .select(EVENT_SELECT)
     .eq("user_id", DEFAULT_USER_ID)
+    .eq("is_recurring", false)
     .gte("start_datetime", start.toISOString())
     .lte("start_datetime", end.toISOString())
     .order("start_datetime");
 
-  if (error) throw new Error(error.message);
-  return (data ?? []).map((row) => mapEventRow(row as Record<string, unknown>));
+  // Recurring anchors that have started on or before the end of the range are
+  // expanded into concrete occurrences within [start, end].
+  const recurringPromise = supabase
+    .from("calendar_events")
+    .select(EVENT_SELECT)
+    .eq("user_id", DEFAULT_USER_ID)
+    .eq("is_recurring", true)
+    .lte("start_datetime", end.toISOString());
+
+  const [single, recurring] = await Promise.all([
+    singlePromise,
+    recurringPromise,
+  ]);
+
+  if (single.error) throw new Error(single.error.message);
+  if (recurring.error) throw new Error(recurring.error.message);
+
+  const singles = (single.data ?? []).map((row) =>
+    mapEventRow(row as Record<string, unknown>),
+  );
+  const expanded = (recurring.data ?? []).flatMap((row) =>
+    expandRecurringEvent(
+      mapEventRow(row as Record<string, unknown>),
+      start,
+      end,
+    ),
+  );
+
+  return [...singles, ...expanded].sort(
+    (a, b) =>
+      new Date(a.start_datetime).getTime() -
+      new Date(b.start_datetime).getTime(),
+  );
 }
 
 export async function getMonthEvents(date: Date) {
-  const start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
-  const end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
+  const start = startOfWeek(startOfMonth(date), { weekStartsOn: 0 });
+  const end = endOfWeek(endOfMonth(date), { weekStartsOn: 0 });
   return getEventsInRange(start, end);
 }
 
 export async function getWeekEvents(date: Date) {
-  const start = startOfWeek(date, { weekStartsOn: 1 });
-  const end = endOfWeek(date, { weekStartsOn: 1 });
+  const start = startOfWeek(date, { weekStartsOn: 0 });
+  const end = endOfWeek(date, { weekStartsOn: 0 });
   return getEventsInRange(start, end);
 }
 

@@ -21,6 +21,7 @@ import {
   deleteCalendarEvent,
   updateEventStatus,
 } from "@/lib/calendar/actions";
+import { describeRecurrenceRule } from "@/lib/calendar/recurrence";
 import {
   EVENT_PRIORITY_LABELS,
   EVENT_STATUS_LABELS,
@@ -205,7 +206,7 @@ export function EventDetailSheet({
 
           {event.is_recurring && event.recurrence_rule && (
             <p className="text-xs text-muted-foreground">
-              Recorrente: {event.recurrence_rule}
+              Recorrente: {describeRecurrenceRule(event.recurrence_rule)}
             </p>
           )}
 

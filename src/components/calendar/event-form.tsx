@@ -25,6 +25,12 @@ import {
 } from "@/lib/calendar/constants";
 import type { CalendarEventWithRelations, SelectOption } from "@/lib/calendar/types";
 import { buildDatetime, splitDatetime } from "@/lib/calendar/utils";
+import {
+  WEEKDAY_OPTIONS,
+  buildWeeklyRule,
+  parseWeeklyRule,
+} from "@/lib/calendar/recurrence";
+import { cn } from "@/lib/utils";
 
 type FormOptions = {
   tasks: SelectOption[];
@@ -88,9 +94,17 @@ export function EventForm({
   const [newDocUrl, setNewDocUrl] = useState("");
   const [notes, setNotes] = useState(event?.notes ?? "");
   const [isRecurring, setIsRecurring] = useState(event?.is_recurring ?? false);
-  const [recurrenceRule, setRecurrenceRule] = useState(
-    event?.recurrence_rule ?? "",
+  const [recurrenceDays, setRecurrenceDays] = useState<number[]>(
+    parseWeeklyRule(event?.recurrence_rule) ?? [],
   );
+
+  function toggleRecurrenceDay(day: number) {
+    setRecurrenceDays((prev) =>
+      prev.includes(day)
+        ? prev.filter((d) => d !== day)
+        : [...prev, day].sort((a, b) => a - b),
+    );
+  }
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -101,6 +115,11 @@ export function EventForm({
 
     if (time && endTime && endTime <= time) {
       setError("O horário de término deve ser depois do início.");
+      return;
+    }
+
+    if (isRecurring && recurrenceDays.length === 0) {
+      setError("Escolha pelo menos um dia da semana para a recorrência.");
       return;
     }
 
@@ -124,7 +143,10 @@ export function EventForm({
       new_document_url: newDocUrl || null,
       notes: notes || null,
       is_recurring: isRecurring,
-      recurrence_rule: isRecurring ? recurrenceRule || null : null,
+      recurrence_rule:
+        isRecurring && recurrenceDays.length
+          ? buildWeeklyRule(recurrenceDays)
+          : null,
     };
 
     startTransition(async () => {
@@ -341,13 +363,31 @@ export function EventForm({
 
           {isRecurring && (
             <div className="space-y-2">
-              <Label htmlFor="recurrence">Regra de recorrência</Label>
-              <Input
-                id="recurrence"
-                value={recurrenceRule}
-                onChange={(e) => setRecurrenceRule(e.target.value)}
-                placeholder="Ex: semanal:segunda, mensal:15"
-              />
+              <Label>Repetir nos dias</Label>
+              <div className="flex flex-wrap gap-1.5">
+                {WEEKDAY_OPTIONS.map((d) => {
+                  const active = recurrenceDays.includes(d.value);
+                  return (
+                    <button
+                      key={d.value}
+                      type="button"
+                      onClick={() => toggleRecurrenceDay(d.value)}
+                      aria-pressed={active}
+                      className={cn(
+                        "rounded-md border px-2.5 py-1 text-xs font-medium transition-colors",
+                        active
+                          ? "border-teal bg-teal/20 text-teal-text"
+                          : "border-border text-muted-foreground hover:bg-muted/40",
+                      )}
+                    >
+                      {d.short}
+                    </button>
+                  );
+                })}
+              </div>
+              <p className="text-[11px] text-muted-foreground">
+                A data acima define a partir de quando a repetição começa.
+              </p>
             </div>
           )}
 

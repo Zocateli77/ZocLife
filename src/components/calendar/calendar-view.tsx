@@ -59,11 +59,11 @@ export function CalendarView({
       let end: Date;
 
       if (mode === "month") {
-        start = startOfWeek(startOfMonth(date), { weekStartsOn: 1 });
-        end = endOfWeek(endOfMonth(date), { weekStartsOn: 1 });
+        start = startOfWeek(startOfMonth(date), { weekStartsOn: 0 });
+        end = endOfWeek(endOfMonth(date), { weekStartsOn: 0 });
       } else if (mode === "week") {
-        start = startOfWeek(date, { weekStartsOn: 1 });
-        end = endOfWeek(date, { weekStartsOn: 1 });
+        start = startOfWeek(date, { weekStartsOn: 0 });
+        end = endOfWeek(date, { weekStartsOn: 0 });
       } else {
         start = new Date(date);
         start.setHours(0, 0, 0, 0);

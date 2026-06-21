@@ -34,8 +34,8 @@ export function CalendarWeekView({
   onEventClick,
   onDayClick,
 }: CalendarWeekViewProps) {
-  const weekStart = startOfWeek(currentDate, { weekStartsOn: 1 });
-  const weekEnd = endOfWeek(currentDate, { weekStartsOn: 1 });
+  const weekStart = startOfWeek(currentDate, { weekStartsOn: 0 });
+  const weekEnd = endOfWeek(currentDate, { weekStartsOn: 0 });
   const days = eachDayOfInterval({ start: weekStart, end: weekEnd });
 
   function getEventsForDay(day: Date) {
@@ -85,12 +85,19 @@ export function CalendarWeekView({
           const dayEvents = getEventsForDay(day);
 
           return (
-            <button
+            <div
               key={day.toISOString()}
-              type="button"
+              role="button"
+              tabIndex={0}
               onClick={() => onDayClick(day)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onDayClick(day);
+                }
+              }}
               className={cn(
-                "rounded-xl border border-border bg-card p-3 text-left transition-shadow hover:shadow-md",
+                "cursor-pointer rounded-xl border border-border bg-card p-3 text-left transition-shadow hover:shadow-md",
                 isToday(day) && "border-teal/50 ring-1 ring-teal/30",
               )}
             >
@@ -113,7 +120,7 @@ export function CalendarWeekView({
                   <p className="text-[10px] text-muted-foreground">—</p>
                 ) : (
                   dayEvents.map((e) => (
-                    <div key={e.id} className="space-y-0.5">
+                    <div key={e.occurrence_key ?? e.id} className="space-y-0.5">
                       <p className="text-[10px] text-muted-foreground">
                         {formatEventTime(e.start_datetime)}
                       </p>
@@ -125,7 +132,7 @@ export function CalendarWeekView({
                   ))
                 )}
               </div>
-            </button>
+            </div>
           );
         })}
       </div>

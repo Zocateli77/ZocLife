@@ -46,6 +46,9 @@ export type CalendarEventWithRelations = CalendarEvent & {
   project?: LinkedProject | null;
   content?: LinkedContent | null;
   document?: LinkedDocument | null;
+  // Set on expanded occurrences of a recurring event; unique per occurrence so
+  // it can be used as a React key without colliding with the shared anchor id.
+  occurrence_key?: string;
 };
 
 export type CreateEventInput = {

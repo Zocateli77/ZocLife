@@ -85,7 +85,7 @@ export function CalendarDayView({
         <div className="space-y-3">
           {sorted.map((event) => (
             <button
-              key={event.id}
+              key={event.occurrence_key ?? event.id}
               type="button"
               onClick={() => onEventClick(event)}
               className={cn(

@@ -30,7 +30,7 @@ type CalendarMonthViewProps = {
   onDayClick: (date: Date) => void;
 };
 
-const WEEKDAYS = ["Seg", "Ter", "Qua", "Qui", "Sex", "Sáb", "Dom"];
+const WEEKDAYS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 export function CalendarMonthView({
   currentDate,
@@ -41,8 +41,8 @@ export function CalendarMonthView({
 }: CalendarMonthViewProps) {
   const monthStart = startOfMonth(currentDate);
   const monthEnd = endOfMonth(currentDate);
-  const gridStart = startOfWeek(monthStart, { weekStartsOn: 1 });
-  const gridEnd = endOfWeek(monthEnd, { weekStartsOn: 1 });
+  const gridStart = startOfWeek(monthStart, { weekStartsOn: 0 });
+  const gridEnd = endOfWeek(monthEnd, { weekStartsOn: 0 });
   const days = eachDayOfInterval({ start: gridStart, end: gridEnd });
 
   function getEventsForDay(day: Date) {
@@ -102,14 +102,21 @@ export function CalendarMonthView({
           const today = isToday(day);
 
           return (
-            <button
+            <div
               key={day.toISOString()}
-              type="button"
+              role="button"
+              tabIndex={0}
               onClick={() => onDayClick(day)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  onDayClick(day);
+                }
+              }}
               aria-current={today ? "date" : undefined}
               aria-label={format(day, "EEEE, d 'de' MMMM", { locale: ptBR })}
               className={cn(
-                "min-h-[68px] bg-card p-1.5 text-left transition-colors hover:bg-muted/30 sm:min-h-[110px]",
+                "min-h-[68px] cursor-pointer bg-card p-1.5 text-left transition-colors hover:bg-muted/30 sm:min-h-[110px]",
                 !inMonth && "opacity-40",
               )}
             >
@@ -124,7 +131,7 @@ export function CalendarMonthView({
               <div className="space-y-0.5">
                 {dayEvents.slice(0, 3).map((e) => (
                   <EventChip
-                    key={e.id}
+                    key={e.occurrence_key ?? e.id}
                     event={e}
                     compact
                     onClick={() => onEventClick(e)}
@@ -136,7 +143,7 @@ export function CalendarMonthView({
                   </p>
                 )}
               </div>
-            </button>
+            </div>
           );
         })}
       </div>
