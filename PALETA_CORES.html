@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZocLabs · Paleta de Cores</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --teal:#14B8A6; --amber:#F59E0B; --ink:#0E1726; --white:#FFFFFF;
+    --slate:#18222F; --cloud:#F5F7FA; --steel:#8A93A6;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--ink); color:var(--white);
+    font-family:'Inter',sans-serif; line-height:1.5;
+    padding:48px 24px 80px;
+    background-image:
+      linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);
+    background-size:40px 40px;
+  }
+  .wrap{max-width:1080px;margin:0 auto}
+  header{text-align:center;margin-bottom:8px}
+  .logo{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:46px;letter-spacing:-1px}
+  .logo .labs{color:var(--teal)}
+  .tag{color:var(--steel);letter-spacing:4px;font-size:13px;margin-top:4px}
+  h2{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:22px;margin:56px 0 18px;
+     display:flex;align-items:center;gap:10px}
+  h2::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--teal)}
+  .sub{color:var(--steel);font-size:14px;margin-top:-8px;margin-bottom:18px}
+
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:18px}
+  .swatch{
+    border-radius:14px;overflow:hidden;background:var(--slate);
+    border:1px solid rgba(255,255,255,.07);cursor:pointer;
+    transition:transform .15s ease, box-shadow .15s ease;
+  }
+  .swatch:hover{transform:translateY(-4px);box-shadow:0 14px 30px rgba(0,0,0,.4)}
+  .chip{height:120px;display:flex;align-items:flex-end;justify-content:flex-end;padding:10px}
+  .copy-hint{font-size:11px;background:rgba(0,0,0,.35);color:#fff;padding:4px 8px;border-radius:20px;opacity:0;transition:opacity .15s}
+  .swatch:hover .copy-hint{opacity:1}
+  .meta{padding:14px 16px}
+  .name{font-family:'Space Grotesk',sans-serif;font-weight:500;font-size:16px}
+  .role{color:var(--steel);font-size:12px;margin:2px 0 10px;min-height:16px}
+  .code{display:flex;justify-content:space-between;font-size:12.5px;color:#cfd5e2;font-family:'Space Grotesk',monospace;padding:2px 0}
+  .code span:first-child{color:var(--steel)}
+
+  /* combos */
+  .combos{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px}
+  .combo{border-radius:14px;padding:22px;border:1px solid rgba(255,255,255,.07)}
+  .combo b{font-family:'Space Grotesk',sans-serif}
+  .combo small{display:block;margin-top:8px;font-size:12px;opacity:.8}
+
+  /* thumbnails */
+  .thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:20px}
+  .thumb{aspect-ratio:16/9;border-radius:14px;overflow:hidden;position:relative;
+         display:flex;flex-direction:column;justify-content:center;padding:26px;
+         border:1px solid rgba(255,255,255,.08)}
+  .thumb .kicker{font-size:12px;letter-spacing:3px;font-weight:600;margin-bottom:8px}
+  .thumb .ttl{font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:30px;line-height:1.05;text-transform:uppercase}
+  .thumb .badge{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:9px;
+                display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700}
+  .t-dark{background:var(--ink)}
+  .t-dark .kicker{color:var(--teal)}
+  .t-dark .ttl{color:#fff}
+  .t-dark .ttl .hl{color:var(--amber)}
+  .t-teal{background:linear-gradient(135deg,#14B8A6,#0E7C70)}
+  .t-teal .kicker{color:#c5f5ee}
+  .t-teal .ttl{color:var(--ink)}
+  .t-teal .ttl .hl{color:#fff}
+  .t-light{background:var(--cloud);color:var(--ink)}
+  .t-light .kicker{color:#0E9C8C}
+  .t-light .ttl{color:var(--ink)}
+  .t-light .ttl .hl{color:var(--amber)}
+
+  footer{text-align:center;color:var(--steel);font-size:12px;margin-top:60px;letter-spacing:1px}
+
+  /* toast */
+  #toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);
+    background:var(--teal);color:#06231f;padding:12px 22px;border-radius:30px;font-weight:600;font-size:14px;
+    opacity:0;pointer-events:none;transition:all .2s ease;box-shadow:0 10px 30px rgba(20,184,166,.4)}
+  #toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="logo">Zoc<span class="labs">Labs</span></div>
+    <div class="tag">PALETA DE CORES · TECNOLOGIA NA PRÁTICA</div>
+  </header>
+
+  <h2>Cores da marca</h2>
+  <p class="sub">Clique em qualquer cor para copiar o código HEX.</p>
+  <div class="grid" id="grid"></div>
+
+  <h2>Combinações recomendadas</h2>
+  <div class="combos">
+    <div class="combo" style="background:#0E1726">
+      <b style="color:#fff">Texto branco sobre Ink</b>
+      <small style="color:#8A93A6">Base padrão de artes escuras. Profissional e com respiro.</small>
+    </div>
+    <div class="combo" style="background:#0E1726">
+      <b style="color:#14B8A6">Teal sobre Ink</b>
+      <small style="color:#8A93A6">A cor da marca. Use em títulos, logo e elementos de identidade.</small>
+    </div>
+    <div class="combo" style="background:#0E1726">
+      <b style="color:#F59E0B">Âmbar sobre Ink</b>
+      <small style="color:#8A93A6">O destaque/insight. Use para 1 ponto-chave por arte (número, CTA).</small>
+    </div>
+    <div class="combo" style="background:#F5F7FA">
+      <b style="color:#0E1726">Ink sobre Cloud</b>
+      <small style="color:#5B637A">Base de artes claras. Limpa e legível. (Teal claro: #0E9C8C)</small>
+    </div>
+  </div>
+
+  <h2>Como fica numa thumbnail</h2>
+  <p class="sub">Mockups fictícios aplicando a paleta e a tipografia ZocLabs.</p>
+  <div class="thumbs">
+    <div class="thumb t-dark">
+      <div class="badge" style="background:#14B8A6;color:#0E1726">L</div>
+      <div class="kicker">MÃO NA MASSA</div>
+      <div class="ttl">Automatize <span class="hl">em 10min</span></div>
+    </div>
+    <div class="thumb t-teal">
+      <div class="badge" style="background:#0E1726;color:#fff">L</div>
+      <div class="kicker">LAB NEWS</div>
+      <div class="ttl">IA da <span class="hl">semana</span></div>
+    </div>
+    <div class="thumb t-light">
+      <div class="badge" style="background:#14B8A6;color:#fff">L</div>
+      <div class="kicker">CARREIRA</div>
+      <div class="ttl">Saia do <span class="hl">Excel</span></div>
+    </div>
+  </div>
+
+  <footer>ZocLabs · Brand System · Veja o BRAND_GUIDE.md para regras de uso</footer>
+</div>
+
+<div id="toast">Copiado!</div>
+
+<script>
+  const colors=[
+    {name:"Lab Teal",role:"Herói · marca, líquido",hex:"#14B8A6",rgb:"20, 184, 166",hsl:"173°, 80%, 40%",text:"#062a25"},
+    {name:"Insight Amber",role:"Acento · insight, CTA",hex:"#F59E0B",rgb:"245, 158, 11",hsl:"38°, 92%, 50%",text:"#3a2600"},
+    {name:"Ink",role:"Base escura · fundos",hex:"#0E1726",rgb:"14, 23, 38",hsl:"218°, 46%, 10%",text:"#fff"},
+    {name:"Pure White",role:"Texto / respiro",hex:"#FFFFFF",rgb:"255, 255, 255",hsl:"0°, 0%, 100%",text:"#0E1726"},
+    {name:"Slate",role:"Cartões / superfícies",hex:"#18222F",rgb:"24, 34, 47",hsl:"214°, 32%, 14%",text:"#fff"},
+    {name:"Cloud",role:"Fundo claro",hex:"#F5F7FA",rgb:"245, 247, 250",hsl:"214°, 32%, 97%",text:"#0E1726"},
+    {name:"Steel",role:"Texto secundário",hex:"#8A93A6",rgb:"138, 147, 166",hsl:"221°, 14%, 60%",text:"#0E1726"},
+  ];
+
+  const grid=document.getElementById('grid');
+  const toast=document.getElementById('toast');
+
+  colors.forEach(c=>{
+    const el=document.createElement('div');
+    el.className='swatch';
+    el.innerHTML=`
+      <div class="chip" style="background:${c.hex}">
+        <span class="copy-hint" style="color:${c.text==='#fff'?'#fff':'#fff'};background:rgba(0,0,0,.32)">clique p/ copiar</span>
+      </div>
+      <div class="meta">
+        <div class="name">${c.name}</div>
+        <div class="role">${c.role}</div>
+        <div class="code"><span>HEX</span><span>${c.hex}</span></div>
+        <div class="code"><span>RGB</span><span>${c.rgb}</span></div>
+        <div class="code"><span>HSL</span><span>${c.hsl}</span></div>
+      </div>`;
+    el.addEventListener('click',()=>copy(c.hex));
+    grid.appendChild(el);
+  });
+
+  function copy(text){
+    navigator.clipboard.writeText(text).then(()=>{
+      toast.textContent=text+" copiado!";
+      toast.classList.add('show');
+      clearTimeout(window._t);
+      window._t=setTimeout(()=>toast.classList.remove('show'),1400);
+    });
+  }
+</script>
+</body>
+</html>

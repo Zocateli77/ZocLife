@@ -1,0 +1,17 @@
+name: Daily Briefing
+
+on:
+  schedule:
+    - cron: "0 11 * * *"
+  workflow_dispatch:
+
+jobs:
+  send-briefing:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger daily briefing
+        run: |
+          curl -X POST "${{ secrets.APP_BASE_URL }}/api/automation/daily-briefing" \
+            -H "Authorization: Bearer ${{ secrets.DAILY_BRIEFING_SECRET }}" \
+            -H "Content-Type: application/json" \
+            -f
