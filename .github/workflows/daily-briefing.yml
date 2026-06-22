@@ -1,8 +1,8 @@
 name: Daily Briefing
 
+# Scheduling moved to Vercel Cron (see vercel.json) for reliability.
+# This workflow is kept for manual triggering only (workflow_dispatch).
 on:
-  schedule:
-    - cron: "30 8 * * *"
   workflow_dispatch:
 
 jobs:

@@ -7,14 +7,18 @@ import { collectDailyBriefingData } from "@/lib/automation/collect-daily-briefin
 import { generateDailyBriefingHtml } from "@/lib/email/generate-daily-briefing-html";
 import { sendNotification } from "@/lib/notifications/send-notification";
 
-export async function POST(request: Request) {
+// Authorized callers: the manual/GitHub path (DAILY_BRIEFING_SECRET) and Vercel
+// Cron, which invokes with `Authorization: Bearer <CRON_SECRET>`.
+function isAuthorized(request: Request): boolean {
   const auth = request.headers.get("authorization");
-  const secret = process.env.DAILY_BRIEFING_SECRET;
+  const secrets = [
+    process.env.DAILY_BRIEFING_SECRET,
+    process.env.CRON_SECRET,
+  ].filter(Boolean);
+  return secrets.some((secret) => auth === `Bearer ${secret}`);
+}
 
-  if (!secret || auth !== `Bearer ${secret}`) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
+async function runDailyBriefing() {
   const supabase = createServerSupabaseClient();
   const startedAt = new Date().toISOString();
 
@@ -71,4 +75,20 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ error: message }, { status: 500 });
   }
+}
+
+// Vercel Cron triggers this endpoint with a GET request.
+export async function GET(request: Request) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return runDailyBriefing();
+}
+
+// Manual trigger / external schedulers use POST.
+export async function POST(request: Request) {
+  if (!isAuthorized(request)) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+  return runDailyBriefing();
 }
