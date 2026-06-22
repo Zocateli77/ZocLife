@@ -8,7 +8,9 @@ export async function getContentItems(): Promise<ContentItem[]> {
   const supabase = createServerSupabaseClient();
   const { data } = await supabase
     .from("content_items")
-    .select("*")
+    .select(
+      "*, attachments:content_attachments(id, content_item_id, user_id, file_name, file_path, mime_type, size_bytes, created_at)",
+    )
     .eq("user_id", DEFAULT_USER_ID)
     .neq("status", "archived")
     .order("updated_at", { ascending: false });

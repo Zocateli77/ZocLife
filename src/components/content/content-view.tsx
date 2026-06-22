@@ -2,18 +2,17 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Video, ExternalLink } from "lucide-react";
+import { Plus, Video, ExternalLink, Paperclip } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Sheet } from "@/components/ui/sheet";
-import { Select } from "@/components/ui/select";
 import { PageHeader } from "@/components/ui/page-header";
-import { createContentItem, updateContentStatus } from "@/lib/content/actions";
+import { updateContentStatus } from "@/lib/content/actions";
 import { CONTENT_STATUS_LABELS, PLATFORM_LABELS } from "@/lib/content/types";
 import type { ContentItem } from "@/lib/content/types";
+import { ContentForm } from "./content-form";
+import { ContentDetailSheet } from "./content-detail-sheet";
 
 const PIPELINE_COLS = ["idea", "script", "ready_to_record", "recorded", "editing", "scheduled", "published"];
 
@@ -21,19 +20,8 @@ export function ContentView({ items }: { items: ContentItem[] }) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [open, setOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [platform, setPlatform] = useState("youtube");
-  const [scriptUrl, setScriptUrl] = useState("");
-  const [plannedDate, setPlannedDate] = useState("");
-
-  function handleCreate(e: React.FormEvent) {
-    e.preventDefault();
-    start(async () => {
-      await createContentItem({ title, platform, script_url: scriptUrl || undefined, planned_date: plannedDate || undefined });
-      setOpen(false);
-      router.refresh();
-    });
-  }
+  const [selected, setSelected] = useState<ContentItem | null>(null);
+  const [detailOpen, setDetailOpen] = useState(false);
 
   function advance(id: string, current: string) {
     const idx = PIPELINE_COLS.indexOf(current);
@@ -42,6 +30,11 @@ export function ContentView({ items }: { items: ContentItem[] }) {
       await updateContentStatus(id, next);
       router.refresh();
     });
+  }
+
+  function openDetail(item: ContentItem) {
+    setSelected(item);
+    setDetailOpen(true);
   }
 
   return (
@@ -67,24 +60,62 @@ export function ContentView({ items }: { items: ContentItem[] }) {
                 <span>{col.length}</span>
               </h3>
               <div className="space-y-2 rounded-xl border border-dashed border-border bg-muted/20 p-2 min-h-[120px]">
-                {col.map((item) => (
-                  <Card key={item.id} className="shadow-sm">
-                    <CardContent className="p-3 space-y-2">
-                      <p className="text-sm font-medium">{item.title}</p>
-                      <Badge variant="outline" className="text-[10px]">{PLATFORM_LABELS[item.platform]}</Badge>
-                      {item.script_url && (
-                        <a href={item.script_url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 text-xs text-teal-text hover:underline">
-                          <ExternalLink className="h-3 w-3" /> Roteiro
-                        </a>
-                      )}
-                      {status !== "published" && (
-                        <Button size="sm" variant="outline" className="w-full" onClick={() => advance(item.id, status)} disabled={pending}>
-                          Avançar
-                        </Button>
-                      )}
-                    </CardContent>
-                  </Card>
-                ))}
+                {col.map((item) => {
+                  const attachmentCount = item.attachments?.length ?? 0;
+                  return (
+                    <Card
+                      key={item.id}
+                      role="button"
+                      tabIndex={0}
+                      onClick={() => openDetail(item)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          openDetail(item);
+                        }
+                      }}
+                      className="cursor-pointer shadow-sm transition-shadow hover:shadow-md"
+                    >
+                      <CardContent className="p-3 space-y-2">
+                        <p className="text-sm font-medium">{item.title}</p>
+                        <div className="flex flex-wrap items-center gap-2">
+                          <Badge variant="outline" className="text-[10px]">{PLATFORM_LABELS[item.platform]}</Badge>
+                          {attachmentCount > 0 && (
+                            <span className="flex items-center gap-0.5 text-[10px] text-muted-foreground">
+                              <Paperclip className="h-3 w-3" />
+                              {attachmentCount}
+                            </span>
+                          )}
+                        </div>
+                        {item.script_url && (
+                          <a
+                            href={item.script_url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-1 text-xs text-teal-text hover:underline"
+                          >
+                            <ExternalLink className="h-3 w-3" /> Roteiro
+                          </a>
+                        )}
+                        {status !== "published" && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="w-full"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              advance(item.id, status);
+                            }}
+                            disabled={pending}
+                          >
+                            Avançar
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  );
+                })}
               </div>
             </div>
           );
@@ -99,18 +130,14 @@ export function ContentView({ items }: { items: ContentItem[] }) {
       )}
 
       <Sheet open={open} onOpenChange={setOpen} title="Novo conteúdo">
-        <form onSubmit={handleCreate} className="space-y-3">
-          <div><Label>Título</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} required /></div>
-          <div><Label>Plataforma</Label>
-            <Select value={platform} onChange={(e) => setPlatform(e.target.value)}>
-              {Object.entries(PLATFORM_LABELS).map(([k, v]) => <option key={k} value={k}>{v}</option>)}
-            </Select>
-          </div>
-          <div><Label>URL do roteiro</Label><Input value={scriptUrl} onChange={(e) => setScriptUrl(e.target.value)} placeholder="https://..." /></div>
-          <div><Label>Data planejada</Label><Input type="date" value={plannedDate} onChange={(e) => setPlannedDate(e.target.value)} /></div>
-          <Button type="submit" disabled={pending} className="w-full">Criar</Button>
-        </form>
+        <ContentForm onSuccess={() => setOpen(false)} onCancel={() => setOpen(false)} />
       </Sheet>
+
+      <ContentDetailSheet
+        item={selected}
+        open={detailOpen}
+        onOpenChange={setDetailOpen}
+      />
     </div>
   );
 }
