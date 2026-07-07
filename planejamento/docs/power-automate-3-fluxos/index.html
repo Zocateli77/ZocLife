@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZocLabs · Doc de estudo — Power Automate do zero: 3 fluxos</title>
+<style>
+  :root{
+    --ink:#0E1726; --teal:#14B8A6; --amber:#F59E0B;
+    --cloud:#F7F9FB; --line:#E2E8F0; --muted:#5A6B7B; --white:#fff;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--cloud);line-height:1.6}
+  h1,h2,h3{font-family:"Space Grotesk","Segoe UI",sans-serif;line-height:1.2;margin:0}
+  .wrap{max-width:860px;margin:0 auto;padding:0 24px}
+  /* hero escuro */
+  .hero{background:var(--ink);color:var(--white);padding:56px 0;margin-bottom:40px}
+  .hero .wrap{text-align:center}
+  .kicker{color:var(--teal);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .hero h1{font-size:34px;margin:14px 0 10px}
+  .hero p{color:#AEBECB;max-width:620px;margin:0 auto;font-size:17px}
+  .badge{display:inline-block;margin-top:18px;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);font-size:13px}
+  /* blocos */
+  section{margin-bottom:38px}
+  h2{font-size:24px;color:var(--ink);border-left:4px solid var(--teal);padding-left:12px;margin-bottom:16px}
+  h3{font-size:18px;margin:22px 0 8px}
+  .amber{color:var(--amber);font-weight:700}
+  .card{background:var(--white);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-bottom:16px}
+  ol,ul{margin:8px 0 8px 0;padding-left:22px}
+  li{margin:6px 0}
+  code{background:#EEF2F6;border-radius:6px;padding:2px 6px;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:12px 0;font-size:15px}
+  th,td{border:1px solid var(--line);padding:10px 12px;text-align:left}
+  th{background:#EDF6F4;color:var(--ink)}
+  .callout{border-left:4px solid var(--amber);background:#FFF8EC;border-radius:8px;padding:14px 18px;margin:14px 0}
+  .callout strong{color:var(--ink)}
+  .step{display:flex;gap:14px;align-items:flex-start;margin:14px 0}
+  .step .n{flex:0 0 34px;height:34px;border-radius:8px;background:var(--ink);color:var(--white);display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk",sans-serif;font-weight:700}
+  footer{background:var(--ink);color:#AEBECB;text-align:center;padding:34px 0;margin-top:48px}
+  footer strong{color:var(--teal)}
+  @media print{body{background:#fff}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">ZocLabs · Mão na Massa · Doc de estudo</div>
+    <h1>Power Automate do zero: 3 fluxos simples pra parar de fazer trabalho manual</h1>
+    <p>Material de estudo e roteiro de aula do vídeo V1. Tudo o que você precisa pra montar e ensinar os 3 fluxos — sem código.</p>
+    <span class="badge">Nível: iniciante · ~10 min de vídeo</span>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section>
+    <h2>O que o aluno sai sabendo</h2>
+    <div class="card">
+      <ul>
+        <li>Montar um fluxo que <strong>salva anexos de e-mail no SharePoint</strong> automaticamente.</li>
+        <li>Disparar um <strong>alerta no Teams</strong> quando algo acontece.</li>
+        <li>Criar um <strong>lembrete automático</strong> recorrente.</li>
+        <li>Entender o trio que sustenta qualquer automação: <span class="amber">gatilho → condição → ação</span>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Conceito-base (o "porquê")</h2>
+    <div class="card">
+      <p>Todo fluxo do Power Automate é a mesma estrutura mental:</p>
+      <table>
+        <tr><th>Peça</th><th>Pergunta que responde</th><th>Exemplo do vídeo</th></tr>
+        <tr><td><strong>Gatilho</strong> (trigger)</td><td>Quando isso deve rodar?</td><td>Quando chegar um e-mail novo</td></tr>
+        <tr><td><strong>Condição</strong> (condition)</td><td>Só rodar se…?</td><td>Se o e-mail tiver anexo</td></tr>
+        <tr><td><strong>Ação</strong> (action)</td><td>O que fazer?</td><td>Salvar no SharePoint + avisar no Teams</td></tr>
+      </table>
+      <div class="callout"><strong>Mensagem-âncora da aula:</strong> automação não é "saber programar" — é <span class="amber">descrever um processo que você já faz na mão</span> e deixar a ferramenta repetir.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bloco 1 — Anexos de e-mail → SharePoint</h2>
+    <div class="card">
+      <div class="step"><div class="n">1</div><div><strong>Gatilho:</strong> "Quando um novo e-mail chegar (V3)" no Outlook 365. Aponte a pasta certa.</div></div>
+      <div class="step"><div class="n">2</div><div><strong>Condição:</strong> "Tem anexos" = sim <em>(Has Attachment)</em>. Sem isso, o fluxo roda à toa.</div></div>
+      <div class="step"><div class="n">3</div><div><strong>Ação 1:</strong> "Criar arquivo" no SharePoint — nome do arquivo = nome do anexo; conteúdo = conteúdo do anexo. Use <em>Apply to each</em> (vários anexos).</div></div>
+      <div class="step"><div class="n">4</div><div><strong>Ação 2:</strong> "Postar mensagem no Teams" avisando que chegou e foi salvo.</div></div>
+      <div class="callout"><strong>Erro comum:</strong> esquecer o <code>Apply to each</code>. Se o e-mail tem 3 anexos e você não percorre a lista, salva só 1 (ou dá erro).</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bloco 2 — Alerta no Teams</h2>
+    <div class="card">
+      <div class="step"><div class="n">1</div><div><strong>Gatilho:</strong> agendado (recorrência) ou por evento (item criado numa lista/planilha).</div></div>
+      <div class="step"><div class="n">2</div><div><strong>Ação:</strong> "Postar mensagem em um chat ou canal". Monte a mensagem com os campos dinâmicos (ex.: nome da tarefa, prazo).</div></div>
+      <div class="step"><div class="n">3</div><div><strong>Teste:</strong> use o botão <em>Test → Manually</em> antes de confiar. Em 2026 dá pra testar passo a passo com dados de exemplo.</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Bloco 3 — Lembrete automático</h2>
+    <div class="card">
+      <div class="step"><div class="n">1</div><div><strong>Gatilho:</strong> "Recorrência" — ex.: toda segunda às 8h.</div></div>
+      <div class="step"><div class="n">2</div><div><strong>Ação:</strong> e-mail ou mensagem no Teams com o lembrete (checklist da semana, por exemplo).</div></div>
+      <div class="callout"><strong>Gancho de aula:</strong> "Se você manda a mesma mensagem todo dia/semana, isso é trabalho de robô — não seu."</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Glossário EN ↔ PT</h2>
+    <div class="card">
+      <table>
+        <tr><th>Inglês (interface)</th><th>Português</th></tr>
+        <tr><td>Trigger</td><td>Gatilho</td></tr>
+        <tr><td>Action</td><td>Ação</td></tr>
+        <tr><td>Condition</td><td>Condição</td></tr>
+        <tr><td>Apply to each</td><td>Aplicar a cada (laço)</td></tr>
+        <tr><td>Has Attachment</td><td>Tem anexo</td></tr>
+        <tr><td>Create file</td><td>Criar arquivo</td></tr>
+        <tr><td>Recurrence</td><td>Recorrência</td></tr>
+        <tr><td>Flow</td><td>Fluxo</td></tr>
+      </table>
+    </div>
+  </section>
+
+  <section>
+    <h2>Perguntas que a audiência faz (prepare a resposta)</h2>
+    <div class="card">
+      <ul>
+        <li><strong>"Preciso pagar?"</strong> — O essencial vem no plano do Microsoft 365; conectores premium podem exigir licença.</li>
+        <li><strong>"E se eu não tiver SharePoint?"</strong> — Dá pra salvar no OneDrive com a mesma lógica.</li>
+        <li><strong>"Isso funciona com Gmail?"</strong> — Sim, há conector do Gmail (com cuidados de permissão).</li>
+        <li><strong>"E se a Microsoft mudar a tela?"</strong> — Em 2026 há <span class="amber">self-healing</span> em desktop flows; em cloud flows, a lógica gatilho→ação se mantém.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section>
+    <h2>Reaproveitamento deste vídeo</h2>
+    <div class="card">
+      <ul>
+        <li><strong>Carrosséis:</strong> #13 (fluxo nº1), #14 (anexos→SharePoint), #15 (alerta Teams).</li>
+        <li><strong>Reels:</strong> R2 (fluxo que economiza 2h), R6 (alerta no Teams).</li>
+        <li><strong>LinkedIn:</strong> "3 fluxos que devolvem horas por semana".</li>
+        <li><strong>TikTok:</strong> gancho dos anexos ("seu e-mail vira pasta sozinho").</li>
+        <li><strong>Newsletter:</strong> resumo + link desta doc.</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>ZocLabs</strong> — Tecnologia na prática.</p>
+  </div>
+</footer>
+
+</body>
+</html>

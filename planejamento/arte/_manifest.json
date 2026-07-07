@@ -1,0 +1,182 @@
+[
+  {
+    "slug": "c01-codex-explicado",
+    "n": 6,
+    "title": "Codex explicado pra quem trabalha com automacao",
+    "pilar": "Codex"
+  },
+  {
+    "slug": "c02-testaria-primeiro-codex",
+    "n": 6,
+    "title": "O que eu testaria PRIMEIRO no Codex",
+    "pilar": "Codex"
+  },
+  {
+    "slug": "c03-codex-x-claudecode",
+    "n": 6,
+    "title": "Codex x Claude Code: qual usar em 2026?",
+    "pilar": "Codex"
+  },
+  {
+    "slug": "c04-tarefas-chatas-codex",
+    "n": 6,
+    "title": "5 tarefas chatas que o Codex resolve no terminal",
+    "pilar": "Codex"
+  },
+  {
+    "slug": "c05-codex-windows",
+    "n": 6,
+    "title": "Codex no Windows: agora ele clica sozinho",
+    "pilar": "Codex"
+  },
+  {
+    "slug": "c06-primeiro-script-codex",
+    "n": 6,
+    "title": "Do zero ao 1º script com Codex em 20 min",
+    "pilar": "Codex"
+  },
+  {
+    "slug": "c07-claude-x-claudecode",
+    "n": 6,
+    "title": "Claude comum x Claude Code: a diferenca que ninguem explica",
+    "pilar": "Claude Code"
+  },
+  {
+    "slug": "c08-entender-projeto",
+    "n": 6,
+    "title": "Use Claude Code pra ENTENDER um projeto que nao e seu",
+    "pilar": "Claude Code"
+  },
+  {
+    "slug": "c09-subagents",
+    "n": 6,
+    "title": "Subagents: o recurso de 2026 que multiplica o Claude Code",
+    "pilar": "Claude Code"
+  },
+  {
+    "slug": "c10-contexto-claudemd",
+    "n": 6,
+    "title": "Claude Code + contexto: arquivos, arquitetura e CLAUDE.md",
+    "pilar": "Claude Code"
+  },
+  {
+    "slug": "c11-3-automacoes-noite",
+    "n": 6,
+    "title": "3 automacoes que montei com Claude Code numa noite",
+    "pilar": "Claude Code"
+  },
+  {
+    "slug": "c12-skills",
+    "n": 6,
+    "title": "Skills: ensine o agente a trabalhar do seu jeito",
+    "pilar": "Claude Code"
+  },
+  {
+    "slug": "c13-fluxo-iniciante",
+    "n": 6,
+    "title": "O fluxo que todo iniciante em Power Automate deveria criar",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c14-anexos-sharepoint",
+    "n": 6,
+    "title": "Salve anexos de e-mail no SharePoint sem codigo",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c15-alerta-teams",
+    "n": 6,
+    "title": "Alerta no Teams automatico em 4 passos",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c16-aprovacao-simples",
+    "n": 6,
+    "title": "Aprovacao simples no Power Automate (sem planilha)",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c17-antes-depois",
+    "n": 6,
+    "title": "Tarefa manual vira fluxo: antes e depois",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c18-powerautomate-agentes",
+    "n": 6,
+    "title": "Power Automate agora tem agentes de IA: o que muda",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c19-self-healing",
+    "n": 6,
+    "title": "Self-healing: fluxos que se consertam sozinhos em 2026",
+    "pilar": "Power Automate"
+  },
+  {
+    "slug": "c20-app-anexos-sharepoint",
+    "n": 6,
+    "title": "App em 30 min: enviar anexos do Power Apps pro SharePoint",
+    "pilar": "Power Apps"
+  },
+  {
+    "slug": "c21-tela-solicitacao",
+    "n": 6,
+    "title": "Tela de solicitacao interna: form + galeria + botao",
+    "pilar": "Power Apps"
+  },
+  {
+    "slug": "c22-checklist",
+    "n": 6,
+    "title": "App de checklist no Power Apps do zero",
+    "pilar": "Power Apps"
+  },
+  {
+    "slug": "c23-powerapp-com-ia",
+    "n": 6,
+    "title": "Construa um Power App CONVERSANDO com IA (MCP authoring)",
+    "pilar": "Power Apps"
+  },
+  {
+    "slug": "c24-app-skills",
+    "n": 6,
+    "title": "App Skills: seu Power App vira ferramenta de agente",
+    "pilar": "Power Apps"
+  },
+  {
+    "slug": "c25-erros-powerapps",
+    "n": 6,
+    "title": "5 erros de iniciante no Power Apps",
+    "pilar": "Power Apps"
+  },
+  {
+    "slug": "c26-3-automacoes-simples",
+    "n": 6,
+    "title": "3 automacoes simples que economizam horas por semana",
+    "pilar": "IA + Automação"
+  },
+  {
+    "slug": "c27-comecar-hoje",
+    "n": 6,
+    "title": "O que eu faria se comecasse em automacao HOJE",
+    "pilar": "IA + Automação"
+  },
+  {
+    "slug": "c28-lowcode-x-codigo",
+    "n": 6,
+    "title": "Low-code x codigo: quando usar cada um",
+    "pilar": "IA + Automação"
+  },
+  {
+    "slug": "c29-agentes-explicados",
+    "n": 6,
+    "title": "Agentes de IA explicados sem enrolacao",
+    "pilar": "IA + Automação"
+  },
+  {
+    "slug": "c30-meu-setup",
+    "n": 6,
+    "title": "Meu setup de IA pra trabalhar",
+    "pilar": "IA + Automação"
+  }
+]

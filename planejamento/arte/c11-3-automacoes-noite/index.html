@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>c11-3-automacoes-noite</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap');
+:root{--ink:#0E1726;--ink2:#16233a;--teal:#14B8A6;--amber:#F59E0B;--mist:#AEBECB}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a1018}
+.slide{position:relative;width:1080px;height:1350px;background:var(--ink);color:#fff;font-family:"Inter",sans-serif;
+  overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px 90px;
+  background-image:linear-gradient(rgba(20,184,166,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(20,184,166,.05) 1px,transparent 1px);background-size:60px 60px}
+.slide + .slide{margin-top:40px}
+.kicker{font-family:"Space Grotesk";font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:24px;color:var(--teal)}
+.num{position:absolute;top:90px;right:90px;font-family:"Space Grotesk";font-weight:700;font-size:26px;color:var(--mist);opacity:.6}
+h1{font-family:"Space Grotesk";font-weight:700;line-height:1.05;letter-spacing:-.02em;margin-top:28px;font-size:96px}
+h2{font-family:"Space Grotesk";font-weight:700;font-size:70px;line-height:1.09;margin-top:24px}
+p.body{font-size:42px;line-height:1.4;color:#D8E1EA;margin-top:30px;max-width:880px}
+.a{color:var(--amber)}
+.practice{border-left:8px solid var(--amber);background:rgba(245,158,11,.08);border-radius:14px;padding:44px 46px;margin-top:30px}
+.practice .tag{font-family:"Space Grotesk";font-weight:700;font-size:34px;color:var(--amber);letter-spacing:.04em}
+.practice p{font-size:46px;line-height:1.32;margin-top:18px}
+.cta-big{font-family:"Space Grotesk";font-weight:700;font-size:66px;line-height:1.1;margin-top:24px}
+.cta-sub{font-size:42px;color:#D8E1EA;margin-top:28px}
+.foot{position:absolute;bottom:84px;left:90px;font-family:"Space Grotesk";font-weight:500;font-size:30px;color:var(--mist)}
+.foot b{color:var(--teal)}
+.swipe{position:absolute;bottom:84px;right:90px;font-size:34px;color:var(--mist)}
+</style></head><body>
+<section class="slide" id="s1"><div class="num">01</div><div class="kicker">ZocLabs · Claude Code</div><h1>Numa <b class="a">noite</b>, montei 3 automações com Claude Code.</h1><p class="body">Olha o que dá pra fazer.</p><div class="swipe">arrasta →</div></section>
+<section class="slide" id="s2"><div class="num">02</div><div class="kicker">automação 1</div><h2>Organizar e renomear arquivos.</h2><p class="body">Pasta bagunçada virou estrutura por data e tipo.</p></section>
+<section class="slide" id="s3"><div class="num">03</div><div class="kicker">automação 2</div><h2>Relatório automático.</h2><p class="body">Lê uma planilha e cospe um resumo formatado.</p></section>
+<section class="slide" id="s4"><div class="num">04</div><div class="kicker">automação 3</div><h2>Integração simples entre dois apps.</h2><p class="body">Pegou dados de um, jogou no outro, sem copiar e colar.</p></section>
+<section class="slide" id="s5"><div class="num">05</div><div class="kicker">mão na massa</div><div class="practice"><div class="tag">→ NA PRÁTICA:</div><p>A mais útil: o relatório. Prompt: “leia este CSV e gere um resumo por mês”.</p></div></section>
+<section class="slide" id="s6"><div class="num">06</div><div class="kicker">sua vez</div><div class="cta-big">Salva.</div><div class="cta-sub">Qual dessas você faria primeiro?</div><div class="foot"><b>Tecnologia na prática.</b></div></section>
+<script>
+const only=new URLSearchParams(location.search).get('only');
+if(only){document.querySelectorAll('.slide').forEach(s=>{s.style.display='none';s.style.marginTop='0';});
+const t=document.getElementById('s'+only); if(t)t.style.display='flex'; document.documentElement.style.background='#0E1726';}
+</script></body></html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZocLabs · Doc de estudo — C13 O fluxo que todo iniciante deveria criar</title>
+<style>
+  :root{--ink:#0E1726;--teal:#14B8A6;--amber:#F59E0B;--cloud:#F7F9FB;--line:#E2E8F0;--muted:#5A6B7B;--white:#fff}
+  *{box-sizing:border-box} body{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--cloud);line-height:1.6}
+  h1,h2,h3{font-family:"Space Grotesk","Segoe UI",sans-serif;line-height:1.2;margin:0}
+  .wrap{max-width:840px;margin:0 auto;padding:0 24px}
+  .hero{background:var(--ink);color:#fff;padding:52px 0;margin-bottom:36px}.hero .wrap{text-align:center}
+  .kicker{color:var(--teal);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .hero h1{font-size:30px;margin:14px 0 8px}.hero p{color:#AEBECB;max-width:620px;margin:0 auto;font-size:16px}
+  .badge{display:inline-block;margin-top:16px;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);font-size:13px}
+  section{margin-bottom:34px} h2{font-size:23px;border-left:4px solid var(--teal);padding-left:12px;margin-bottom:14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  ol,ul{margin:8px 0;padding-left:22px} li{margin:6px 0}
+  code{background:#EEF2F6;border-radius:6px;padding:2px 6px;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:15px} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:#EDF6F4}
+  .amber{color:var(--amber);font-weight:700}
+  .callout{border-left:4px solid var(--amber);background:#FFF8EC;border-radius:8px;padding:14px 18px;margin:12px 0}
+  .step{display:flex;gap:14px;align-items:flex-start;margin:12px 0}.step .n{flex:0 0 32px;height:32px;border-radius:8px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk";font-weight:700}
+  .post{background:#0E1726;color:#D8E1EA;border-radius:12px;padding:18px 22px;font-size:15px}.post b{color:var(--teal)}
+  footer{background:var(--ink);color:#AEBECB;text-align:center;padding:30px 0;margin-top:40px}footer strong{color:var(--teal)}
+  @media print{body{background:#fff}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="kicker">ZocLabs · Power Automate · Doc de estudo</div>
+  <h1>O fluxo que todo iniciante deveria criar</h1>
+  <p>Carrossel C13. Material pra você estudar, dar aula e montar o primeiro fluxo com segurança.</p>
+  <span class="badge">Nível: iniciante · base de toda automação</span>
+</div></header>
+
+<main class="wrap">
+  <section>
+    <h2>A ideia central (decore isto)</h2>
+    <div class="card">
+      <p>Todo fluxo do Power Automate é a mesma estrutura mental — <span class="amber">gatilho → condição → ação</span>:</p>
+      <table>
+        <tr><th>Peça</th><th>Pergunta</th><th>Exemplo</th></tr>
+        <tr><td>Gatilho</td><td>Quando rodar?</td><td>Quando chegar um e-mail</td></tr>
+        <tr><td>Condição</td><td>Só rodar se…?</td><td>Se tiver anexo</td></tr>
+        <tr><td>Ação</td><td>O que fazer?</td><td>Salvar + avisar no Teams</td></tr>
+      </table>
+      <div class="callout"><strong>Frase-âncora de aula:</strong> automação não é “saber programar” — é descrever um processo que você já faz na mão e deixar a ferramenta repetir.</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>O primeiro fluxo, passo a passo</h2>
+    <div class="card">
+      <div class="step"><div class="n">1</div><div><strong>Gatilho:</strong> Outlook 365 → “Quando um novo e-mail chegar (V3)”. Aponte a pasta.</div></div>
+      <div class="step"><div class="n">2</div><div><strong>Condição:</strong> “Tem anexos” = sim <em>(Has Attachment = true)</em>.</div></div>
+      <div class="step"><div class="n">3</div><div><strong>Ação:</strong> SharePoint → “Criar arquivo” (nome do anexo + conteúdo). Dentro de um <code>Apply to each</code>.</div></div>
+      <div class="step"><div class="n">4</div><div><strong>Aviso:</strong> Teams → “Postar mensagem” avisando que salvou.</div></div>
+      <div class="callout"><strong>Erro comum:</strong> esquecer o <code>Apply to each</code>. E-mail com 3 anexos salva só 1 (ou dá erro).</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Perguntas que a audiência faz</h2>
+    <div class="card"><ul>
+      <li><strong>“Preciso pagar?”</strong> — O essencial vem no Microsoft 365; conectores premium podem exigir licença.</li>
+      <li><strong>“E sem SharePoint?”</strong> — Mesma lógica no OneDrive.</li>
+      <li><strong>“Funciona com Gmail?”</strong> — Sim, há conector do Gmail (atenção às permissões).</li>
+      <li><strong>“Qual o segundo fluxo?”</strong> — Alerta no Teams por prazo (carrossel C15) e lembrete recorrente.</li>
+    </ul></div>
+  </section>
+
+  <section>
+    <h2>Legenda educacional pra postar (público)</h2>
+    <div class="post">
+      <b>Se você só vai criar um fluxo no Power Automate, crie esse. 👇</b><br><br>
+      Todo fluxo são 3 peças: gatilho (quando), condição (só se…) e ação (o quê). Decorou isso, decorou Power Automate.<br><br>
+      O primeiro que vale a pena: anexo de e-mail caindo sozinho numa pasta do SharePoint, com aviso no Teams. Monta em ~15 min, sem código.<br><br>
+      Salva pra montar hoje e envia pro colega preso no Excel. Passo a passo em PT no link da bio.<br><br>
+      <i>#powerautomate #automacao #lowcode #produtividade #zoclabs</i>
+    </div>
+  </section>
+
+  <section>
+    <h2>Glossário EN ↔ PT</h2>
+    <div class="card"><table>
+      <tr><th>Inglês</th><th>Português</th></tr>
+      <tr><td>Trigger</td><td>Gatilho</td></tr><tr><td>Condition</td><td>Condição</td></tr>
+      <tr><td>Action</td><td>Ação</td></tr><tr><td>Apply to each</td><td>Aplicar a cada (laço)</td></tr>
+      <tr><td>Has Attachment</td><td>Tem anexo</td></tr><tr><td>Create file</td><td>Criar arquivo</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Reaproveitamento</h2>
+    <div class="card"><ul>
+      <li><strong>Reel:</strong> R2 (o fluxo que economiza 2h).</li>
+      <li><strong>Vídeo:</strong> bloco 1 do V1.</li>
+      <li><strong>LinkedIn:</strong> “O primeiro fluxo que todo mundo deveria automatizar”.</li>
+    </ul></div>
+  </section>
+</main>
+<footer><div class="wrap"><p><strong>ZocLabs</strong> — Tecnologia na prática.</p></div></footer>
+</body>
+</html>

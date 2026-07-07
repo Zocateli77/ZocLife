@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ZocLabs · Doc de estudo — C14 Anexos de e-mail no SharePoint sem código</title>
+<style>
+  :root{--ink:#0E1726;--teal:#14B8A6;--amber:#F59E0B;--cloud:#F7F9FB;--line:#E2E8F0;--muted:#5A6B7B;--white:#fff}
+  *{box-sizing:border-box} body{margin:0;font-family:"Inter","Segoe UI",system-ui,sans-serif;color:var(--ink);background:var(--cloud);line-height:1.6}
+  h1,h2,h3{font-family:"Space Grotesk","Segoe UI",sans-serif;line-height:1.2;margin:0}
+  .wrap{max-width:840px;margin:0 auto;padding:0 24px}
+  .hero{background:var(--ink);color:#fff;padding:52px 0;margin-bottom:36px}.hero .wrap{text-align:center}
+  .kicker{color:var(--teal);font-weight:600;letter-spacing:.12em;text-transform:uppercase;font-size:13px}
+  .hero h1{font-size:30px;margin:14px 0 8px}.hero p{color:#AEBECB;max-width:620px;margin:0 auto;font-size:16px}
+  .badge{display:inline-block;margin-top:16px;padding:6px 14px;border:1px solid var(--teal);border-radius:999px;color:var(--teal);font-size:13px}
+  section{margin-bottom:34px} h2{font-size:23px;border-left:4px solid var(--teal);padding-left:12px;margin-bottom:14px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px 24px;margin-bottom:14px}
+  ol,ul{margin:8px 0;padding-left:22px} li{margin:6px 0}
+  code{background:#EEF2F6;border-radius:6px;padding:2px 6px;font-size:14px}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:15px} th,td{border:1px solid var(--line);padding:9px 12px;text-align:left} th{background:#EDF6F4}
+  .amber{color:var(--amber);font-weight:700}
+  .callout{border-left:4px solid var(--amber);background:#FFF8EC;border-radius:8px;padding:14px 18px;margin:12px 0}
+  .step{display:flex;gap:14px;align-items:flex-start;margin:12px 0}.step .n{flex:0 0 32px;height:32px;border-radius:8px;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:"Space Grotesk";font-weight:700}
+  .post{background:#0E1726;color:#D8E1EA;border-radius:12px;padding:18px 22px;font-size:15px}.post b{color:var(--teal)}
+  footer{background:var(--ink);color:#AEBECB;text-align:center;padding:30px 0;margin-top:40px}footer strong{color:var(--teal)}
+  @media print{body{background:#fff}.card{break-inside:avoid}}
+</style>
+</head>
+<body>
+<header class="hero"><div class="wrap">
+  <div class="kicker">ZocLabs · Power Automate · Doc de estudo</div>
+  <h1>Salve anexos de e-mail no SharePoint sem código</h1>
+  <p>Carrossel C14. O fluxo mais útil pra quem vive baixando anexo na mão — passo a passo de aula.</p>
+  <span class="badge">Nível: iniciante · ~15 min pra montar</span>
+</div></header>
+
+<main class="wrap">
+  <section>
+    <h2>O caso de uso real</h2>
+    <div class="card">
+      <p>Toda semana chega e-mail com nota fiscal, relatório, planilha — e alguém baixa e arrasta pra uma pasta. Esse fluxo faz isso <span class="amber">sozinho</span>, no instante em que o e-mail chega.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>Os 4 passos (com a ação exata)</h2>
+    <div class="card">
+      <div class="step"><div class="n">1</div><div><strong>Gatilho:</strong> Outlook 365 → “Quando um novo e-mail chegar (V3)”. Filtre a pasta e marque <em>“Apenas com anexos = Sim”</em> já no gatilho (reduz disparo à toa).</div></div>
+      <div class="step"><div class="n">2</div><div><strong>Condição:</strong> reforce com <code>Has Attachment = true</code>. Se falso, não faz nada.</div></div>
+      <div class="step"><div class="n">3</div><div><strong>Ação:</strong> SharePoint → “Criar arquivo”, dentro de <code>Apply to each</code> sobre <em>Attachments</em>. Nome = <code>Attachments Name</code>; Conteúdo = <code>Attachments Content</code>.</div></div>
+      <div class="step"><div class="n">4</div><div><strong>Aviso:</strong> Teams → “Postar mensagem em um canal”: “📎 Anexo salvo: <code>Name</code>”.</div></div>
+      <div class="callout"><strong>Erro nº1:</strong> sem o <code>Apply to each</code>, e-mail com vários anexos salva só o primeiro. Erro nº2: pasta do SharePoint errada (confira o caminho).</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Perguntas que a audiência faz</h2>
+    <div class="card"><ul>
+      <li><strong>“Vai salvar e-mail antigo?”</strong> — Não. O gatilho roda só pra e-mails novos a partir de quando você liga o fluxo.</li>
+      <li><strong>“Dá pra separar por remetente/pasta?”</strong> — Sim, com condições extras ou caminho dinâmico no SharePoint.</li>
+      <li><strong>“E se o anexo tiver nome repetido?”</strong> — Prefixe com data/hora no nome do arquivo pra não sobrescrever.</li>
+    </ul></div>
+  </section>
+
+  <section>
+    <h2>Legenda educacional pra postar (público)</h2>
+    <div class="post">
+      <b>Seu e-mail pode virar uma pasta organizada sozinho. 📎</b><br><br>
+      Em 4 passos no Power Automate, sem código: 1) quando chegar e-mail → 2) se tiver anexo → 3) salva no SharePoint (use o Apply to each!) → 4) avisa no Teams.<br><br>
+      Pronto: nunca mais baixar e arrastar anexo na mão.<br><br>
+      Salva pra montar. O passo a passo em português tá no link da bio. 👀<br><br>
+      <i>#powerautomate #sharepoint #automacao #lowcode #zoclabs</i>
+    </div>
+  </section>
+
+  <section>
+    <h2>Glossário EN ↔ PT</h2>
+    <div class="card"><table>
+      <tr><th>Inglês</th><th>Português</th></tr>
+      <tr><td>When a new email arrives</td><td>Quando um novo e-mail chega</td></tr>
+      <tr><td>Has Attachment</td><td>Tem anexo</td></tr>
+      <tr><td>Apply to each</td><td>Aplicar a cada (laço)</td></tr>
+      <tr><td>Create file</td><td>Criar arquivo</td></tr>
+      <tr><td>Attachments Content</td><td>Conteúdo do anexo</td></tr>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Reaproveitamento</h2>
+    <div class="card"><ul>
+      <li><strong>Reel:</strong> R2 — gravação de tela do fluxo (gancho “seu e-mail vira pasta sozinho”).</li>
+      <li><strong>Vídeo:</strong> bloco 1 do V1 + a doc companheira completa.</li>
+      <li><strong>Newsletter/TikTok:</strong> mesma promessa em 15s.</li>
+    </ul></div>
+  </section>
+</main>
+<footer><div class="wrap"><p><strong>ZocLabs</strong> — Tecnologia na prática.</p></div></footer>
+</body>
+</html>

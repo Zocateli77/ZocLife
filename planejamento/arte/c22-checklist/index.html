@@ -1,0 +1,35 @@
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><title>c22-checklist</title><style>
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;600&display=swap');
+:root{--ink:#0E1726;--ink2:#16233a;--teal:#14B8A6;--amber:#F59E0B;--mist:#AEBECB}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:#0a1018}
+.slide{position:relative;width:1080px;height:1350px;background:var(--ink);color:#fff;font-family:"Inter",sans-serif;
+  overflow:hidden;display:flex;flex-direction:column;justify-content:center;padding:96px 90px;
+  background-image:linear-gradient(rgba(20,184,166,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(20,184,166,.05) 1px,transparent 1px);background-size:60px 60px}
+.slide + .slide{margin-top:40px}
+.kicker{font-family:"Space Grotesk";font-weight:500;letter-spacing:.18em;text-transform:uppercase;font-size:24px;color:var(--teal)}
+.num{position:absolute;top:90px;right:90px;font-family:"Space Grotesk";font-weight:700;font-size:26px;color:var(--mist);opacity:.6}
+h1{font-family:"Space Grotesk";font-weight:700;line-height:1.05;letter-spacing:-.02em;margin-top:28px;font-size:96px}
+h2{font-family:"Space Grotesk";font-weight:700;font-size:70px;line-height:1.09;margin-top:24px}
+p.body{font-size:42px;line-height:1.4;color:#D8E1EA;margin-top:30px;max-width:880px}
+.a{color:var(--amber)}
+.practice{border-left:8px solid var(--amber);background:rgba(245,158,11,.08);border-radius:14px;padding:44px 46px;margin-top:30px}
+.practice .tag{font-family:"Space Grotesk";font-weight:700;font-size:34px;color:var(--amber);letter-spacing:.04em}
+.practice p{font-size:46px;line-height:1.32;margin-top:18px}
+.cta-big{font-family:"Space Grotesk";font-weight:700;font-size:66px;line-height:1.1;margin-top:24px}
+.cta-sub{font-size:42px;color:#D8E1EA;margin-top:28px}
+.foot{position:absolute;bottom:84px;left:90px;font-family:"Space Grotesk";font-weight:500;font-size:30px;color:var(--mist)}
+.foot b{color:var(--teal)}
+.swipe{position:absolute;bottom:84px;right:90px;font-size:34px;color:var(--mist)}
+</style></head><body>
+<section class="slide" id="s1"><div class="num">01</div><div class="kicker">ZocLabs · Power Apps</div><h1>Checklist no papel se perde. Esse app <b class="a">salva</b> sozinho.</h1><p class="body">Do zero, projeto pequeno.</p><div class="swipe">arrasta →</div></section>
+<section class="slide" id="s2"><div class="num">02</div><div class="kicker">por que</div><h2>Processo sem checklist erra.</h2><p class="body">E checklist no papel ninguém acha depois.</p></section>
+<section class="slide" id="s3"><div class="num">03</div><div class="kicker">a lista</div><h2>Itens do processo, na tela.</h2><p class="body">Cada etapa vira um item marcável.</p></section>
+<section class="slide" id="s4"><div class="num">04</div><div class="kicker">marcar e salvar</div><h2>Marcou → <b class="a">salvou</b>.</h2><p class="body">Histórico de quem fez e quando, automático.</p></section>
+<section class="slide" id="s5"><div class="num">05</div><div class="kicker">mão na massa</div><div class="practice"><div class="tag">→ NA PRÁTICA:</div><p>Checklist de abertura de loja: marca cada item, salva e gera o registro do dia.</p></div></section>
+<section class="slide" id="s6"><div class="num">06</div><div class="kicker">sua vez</div><div class="cta-big">Salva esse projeto.</div><div class="cta-sub">Envia pra quem ama um checklist.</div><div class="foot"><b>Tecnologia na prática.</b></div></section>
+<script>
+const only=new URLSearchParams(location.search).get('only');
+if(only){document.querySelectorAll('.slide').forEach(s=>{s.style.display='none';s.style.marginTop='0';});
+const t=document.getElementById('s'+only); if(t)t.style.display='flex'; document.documentElement.style.background='#0E1726';}
+</script></body></html>
