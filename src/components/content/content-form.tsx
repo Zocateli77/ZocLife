@@ -7,7 +7,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { createContentItem, updateContentItem } from "@/lib/content/actions";
+import {
+  createContentItem,
+  updateContentItem,
+  type ContentInput,
+} from "@/lib/content/actions";
 import {
   CONTENT_STATUSES,
   CONTENT_STATUS_LABELS,
@@ -20,29 +24,57 @@ import {
 
 type ContentFormProps = {
   item?: ContentItem | null;
+  draft?: Partial<ContentInput>;
   onSuccess?: () => void;
   onCancel?: () => void;
 };
 
-export function ContentForm({ item, onSuccess, onCancel }: ContentFormProps) {
+export function ContentForm({
+  item,
+  draft,
+  onSuccess,
+  onCancel,
+}: ContentFormProps) {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
 
-  const [title, setTitle] = useState(item?.title ?? "");
-  const [platform, setPlatform] = useState(item?.platform ?? "youtube");
-  const [contentType, setContentType] = useState(item?.content_type ?? "video");
-  const [status, setStatus] = useState(item?.status ?? "idea");
-  const [tool, setTool] = useState(item?.tool ?? "");
-  const [description, setDescription] = useState(item?.description ?? "");
-  const [plannedDate, setPlannedDate] = useState(item?.planned_date ?? "");
-  const [publishDate, setPublishDate] = useState(item?.publish_date ?? "");
-  const [caption, setCaption] = useState(item?.caption ?? "");
-  const [cta, setCta] = useState(item?.cta ?? "");
-  const [hashtags, setHashtags] = useState((item?.hashtags ?? []).join(", "));
-  const [scriptUrl, setScriptUrl] = useState(item?.script_url ?? "");
-  const [scriptText, setScriptText] = useState(item?.script_text ?? "");
-  const [finalUrl, setFinalUrl] = useState(item?.final_url ?? "");
+  const [title, setTitle] = useState(item?.title ?? draft?.title ?? "");
+  const [platform, setPlatform] = useState(
+    item?.platform ?? draft?.platform ?? "youtube",
+  );
+  const [contentType, setContentType] = useState(
+    item?.content_type ?? draft?.content_type ?? "video",
+  );
+  const [status, setStatus] = useState(
+    item?.status ?? draft?.status ?? "idea",
+  );
+  const [tool, setTool] = useState(item?.tool ?? draft?.tool ?? "");
+  const [description, setDescription] = useState(
+    item?.description ?? draft?.description ?? "",
+  );
+  const [plannedDate, setPlannedDate] = useState(
+    item?.planned_date ?? draft?.planned_date ?? "",
+  );
+  const [publishDate, setPublishDate] = useState(
+    item?.publish_date ?? draft?.publish_date ?? "",
+  );
+  const [caption, setCaption] = useState(
+    item?.caption ?? draft?.caption ?? "",
+  );
+  const [cta, setCta] = useState(item?.cta ?? draft?.cta ?? "");
+  const [hashtags, setHashtags] = useState(
+    (item?.hashtags ?? draft?.hashtags ?? []).join(", "),
+  );
+  const [scriptUrl, setScriptUrl] = useState(
+    item?.script_url ?? draft?.script_url ?? "",
+  );
+  const [scriptText, setScriptText] = useState(
+    item?.script_text ?? draft?.script_text ?? "",
+  );
+  const [finalUrl, setFinalUrl] = useState(
+    item?.final_url ?? draft?.final_url ?? "",
+  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();

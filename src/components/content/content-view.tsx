@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Video, ExternalLink, Paperclip } from "lucide-react";
+import { Plus, Video, ExternalLink, Paperclip, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -13,13 +13,19 @@ import { CONTENT_STATUS_LABELS, PLATFORM_LABELS } from "@/lib/content/types";
 import type { ContentItem } from "@/lib/content/types";
 import { ContentForm } from "./content-form";
 import { ContentDetailSheet } from "./content-detail-sheet";
+import { AiContentChat } from "./ai-content-chat";
+import { AiContentComposer } from "./ai-content-composer";
 
 const PIPELINE_COLS = ["idea", "script", "ready_to_record", "recorded", "editing", "scheduled", "published"];
+
+type AssistantTab = "chat" | "refine";
 
 export function ContentView({ items }: { items: ContentItem[] }) {
   const router = useRouter();
   const [pending, start] = useTransition();
   const [open, setOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
+  const [assistantTab, setAssistantTab] = useState<AssistantTab>("chat");
   const [selected, setSelected] = useState<ContentItem | null>(null);
   const [detailOpen, setDetailOpen] = useState(false);
 
@@ -44,9 +50,21 @@ export function ContentView({ items }: { items: ContentItem[] }) {
         title="Conteúdo"
         description="Pipeline de produção"
         actions={
-          <Button onClick={() => setOpen(true)}>
-            <Plus className="mr-1 h-4 w-4" /> Novo
-          </Button>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => {
+                setAssistantTab("chat");
+                setAiOpen(true);
+              }}
+            >
+              <Sparkles className="mr-1 h-4 w-4" />
+              Assistente IA
+            </Button>
+            <Button onClick={() => setOpen(true)}>
+              <Plus className="mr-1 h-4 w-4" /> Novo
+            </Button>
+          </div>
         }
       />
 
@@ -131,6 +149,48 @@ export function ContentView({ items }: { items: ContentItem[] }) {
 
       <Sheet open={open} onOpenChange={setOpen} title="Novo conteúdo">
         <ContentForm onSuccess={() => setOpen(false)} onCancel={() => setOpen(false)} />
+      </Sheet>
+
+      <Sheet
+        open={aiOpen}
+        onOpenChange={setAiOpen}
+        title="Assistente IA"
+        description="Social Media Manager do ZocLabs — brainstorm, legendas e ideias"
+      >
+        <div className="space-y-4">
+          <div className="flex gap-1 rounded-lg border border-border bg-muted/30 p-1">
+            <Button
+              type="button"
+              variant={assistantTab === "chat" ? "default" : "ghost"}
+              size="sm"
+              className="flex-1"
+              onClick={() => setAssistantTab("chat")}
+            >
+              Conversar
+            </Button>
+            <Button
+              type="button"
+              variant={assistantTab === "refine" ? "default" : "ghost"}
+              size="sm"
+              className="flex-1"
+              onClick={() => setAssistantTab("refine")}
+            >
+              Refinar ideia
+            </Button>
+          </div>
+
+          {assistantTab === "chat" ? (
+            <AiContentChat
+              onSuccess={() => setAiOpen(false)}
+              onCancel={() => setAiOpen(false)}
+            />
+          ) : (
+            <AiContentComposer
+              onSuccess={() => setAiOpen(false)}
+              onCancel={() => setAiOpen(false)}
+            />
+          )}
+        </div>
       </Sheet>
 
       <ContentDetailSheet
