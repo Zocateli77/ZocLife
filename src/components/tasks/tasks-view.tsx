@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Kanban, List, Plus } from "lucide-react";
+import { Kanban, List, Plus, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select } from "@/components/ui/select";
 import { Sheet } from "@/components/ui/sheet";
@@ -10,6 +10,7 @@ import { KanbanBoard } from "./kanban-board";
 import { TaskList } from "./task-list";
 import { TaskForm } from "./task-form";
 import { TaskDetailSheet } from "./task-detail-sheet";
+import { AiTaskComposer } from "./ai-task-composer";
 import {
   TASK_PRIORITIES,
   TASK_PRIORITY_LABELS,
@@ -30,6 +31,7 @@ type ViewMode = "kanban" | "list";
 export function TasksView({ initialTasks, projects }: TasksViewProps) {
   const [view, setView] = useState<ViewMode>("kanban");
   const [createOpen, setCreateOpen] = useState(false);
+  const [aiOpen, setAiOpen] = useState(false);
   const [selectedTask, setSelectedTask] = useState<TaskWithRelations | null>(
     null,
   );
@@ -94,6 +96,11 @@ export function TasksView({ initialTasks, projects }: TasksViewProps) {
               </Button>
             </div>
 
+            <Button variant="outline" onClick={() => setAiOpen(true)}>
+              <Sparkles className="mr-1 h-4 w-4" />
+              Refinar com IA
+            </Button>
+
             <Button onClick={() => setCreateOpen(true)}>
               <Plus className="mr-1 h-4 w-4" />
               Nova tarefa
@@ -147,6 +154,19 @@ export function TasksView({ initialTasks, projects }: TasksViewProps) {
           filterPriority={filterPriority}
         />
       )}
+
+      <Sheet
+        open={aiOpen}
+        onOpenChange={setAiOpen}
+        title="Refinar com IA"
+        description="Descreva a tarefa e deixe a IA estruturar um rascunho"
+      >
+        <AiTaskComposer
+          projects={projects}
+          onSuccess={() => setAiOpen(false)}
+          onCancel={() => setAiOpen(false)}
+        />
+      </Sheet>
 
       <Sheet
         open={createOpen}

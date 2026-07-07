@@ -20,10 +20,11 @@ import {
   type TaskPriority,
   type TaskStatus,
 } from "@/lib/tasks/constants";
-import type { ProjectOption, TaskWithRelations } from "@/lib/tasks/types";
+import type { CreateTaskInput, ProjectOption, TaskWithRelations } from "@/lib/tasks/types";
 
 type TaskFormProps = {
   task?: TaskWithRelations | null;
+  draft?: Partial<CreateTaskInput>;
   projects: ProjectOption[];
   onSuccess?: () => void;
   onCancel?: () => void;
@@ -32,6 +33,7 @@ type TaskFormProps = {
 
 export function TaskForm({
   task,
+  draft,
   projects,
   onSuccess,
   onCancel,
@@ -40,28 +42,44 @@ export function TaskForm({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
   const [error, setError] = useState("");
-  const [showFull, setShowFull] = useState(mode === "full");
+  const [showFull, setShowFull] = useState(mode === "full" || Boolean(draft));
 
   const today = format(new Date(), "yyyy-MM-dd");
 
-  const [title, setTitle] = useState(task?.title ?? "");
-  const [description, setDescription] = useState(task?.description ?? "");
-  const [status, setStatus] = useState<TaskStatus>(task?.status ?? "backlog");
+  const [title, setTitle] = useState(task?.title ?? draft?.title ?? "");
+  const [description, setDescription] = useState(
+    task?.description ?? draft?.description ?? "",
+  );
+  const [status, setStatus] = useState<TaskStatus>(
+    task?.status ?? draft?.status ?? "backlog",
+  );
   const [priority, setPriority] = useState<TaskPriority>(
-    task?.priority ?? "medium",
+    task?.priority ?? draft?.priority ?? "medium",
   );
   const [category, setCategory] = useState<TaskCategory>(
-    (task?.category as TaskCategory) ?? "personal",
+    (task?.category as TaskCategory) ??
+      (draft?.category as TaskCategory) ??
+      "personal",
   );
-  const [dueDate, setDueDate] = useState(task?.due_date ?? "");
-  const [startDate, setStartDate] = useState(task?.start_date ?? "");
-  const [projectId, setProjectId] = useState(task?.project_id ?? "");
+  const [dueDate, setDueDate] = useState(task?.due_date ?? draft?.due_date ?? "");
+  const [startDate, setStartDate] = useState(
+    task?.start_date ?? draft?.start_date ?? "",
+  );
+  const [projectId, setProjectId] = useState(
+    task?.project_id ?? draft?.project_id ?? "",
+  );
   const [estimatedMinutes, setEstimatedMinutes] = useState(
-    task?.estimated_minutes?.toString() ?? "",
+    task?.estimated_minutes?.toString() ??
+      draft?.estimated_minutes?.toString() ??
+      "",
   );
-  const [tags, setTags] = useState(task?.tags?.join(", ") ?? "");
-  const [notes, setNotes] = useState(task?.notes ?? "");
-  const [checklistText, setChecklistText] = useState("");
+  const [tags, setTags] = useState(
+    task?.tags?.join(", ") ?? draft?.tags?.join(", ") ?? "",
+  );
+  const [notes, setNotes] = useState(task?.notes ?? draft?.notes ?? "");
+  const [checklistText, setChecklistText] = useState(
+    draft?.checklist?.join("\n") ?? "",
+  );
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
