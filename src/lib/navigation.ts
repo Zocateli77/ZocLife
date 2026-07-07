@@ -1,8 +1,10 @@
 import {
   LayoutDashboard,
   Calendar,
+  CalendarClock,
   Kanban,
   Target,
+  TrendingDown,
   Dumbbell,
   BookOpen,
   Video,
@@ -30,6 +32,13 @@ export const mainNavigation: NavItem[] = [
     description: "Visão geral do seu dia",
   },
   {
+    title: "Meu Dia",
+    shortTitle: "Meu Dia",
+    href: "/meu-dia",
+    icon: CalendarClock,
+    description: "Grade de horas e blocos do dia",
+  },
+  {
     title: "Calendário",
     href: "/calendario",
     icon: Calendar,
@@ -46,6 +55,12 @@ export const mainNavigation: NavItem[] = [
     href: "/habitos",
     icon: Target,
     description: "Metas e consistência",
+  },
+  {
+    title: "Vícios",
+    href: "/vicios",
+    icon: TrendingDown,
+    description: "Limites diários para reduzir",
   },
   {
     title: "Treinos",

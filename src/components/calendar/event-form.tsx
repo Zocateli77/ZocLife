@@ -63,10 +63,14 @@ export function EventForm({
 
   const initial = event
     ? splitDatetime(event.start_datetime)
-    : {
-        date: format(defaultDate ?? new Date(), "yyyy-MM-dd"),
-        time: "",
-      };
+    : (() => {
+        const d = defaultDate ?? new Date();
+        const hasTime = d.getHours() !== 0 || d.getMinutes() !== 0;
+        return {
+          date: format(d, "yyyy-MM-dd"),
+          time: hasTime ? format(d, "HH:mm") : "",
+        };
+      })();
 
   const endInitial = event?.end_datetime
     ? splitDatetime(event.end_datetime)

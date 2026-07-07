@@ -9,6 +9,7 @@ import type { EventStatus } from "./constants";
 function revalidateCalendarPaths() {
   revalidatePath("/");
   revalidatePath("/calendario");
+  revalidatePath("/meu-dia");
 }
 
 async function resolveDocumentId(input: {
