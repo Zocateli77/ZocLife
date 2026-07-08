@@ -131,7 +131,7 @@ export function ContentForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="content-platform">Plataforma</Label>
           <Select
@@ -162,7 +162,7 @@ export function ContentForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="content-status">Status</Label>
           <Select
@@ -188,7 +188,7 @@ export function ContentForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="content-planned">Data de gravação</Label>
           <Input
@@ -229,7 +229,7 @@ export function ContentForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="content-cta">CTA</Label>
           <Input

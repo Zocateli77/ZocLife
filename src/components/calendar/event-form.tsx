@@ -181,7 +181,7 @@ export function EventForm({
         />
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="event-date">Data *</Label>
           <Input
@@ -208,7 +208,7 @@ export function EventForm({
         </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         <div className="space-y-2">
           <Label htmlFor="event-time">Hora início</Label>
           <Input
@@ -231,7 +231,7 @@ export function EventForm({
 
       {showFull ? (
         <>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="event-status">Status</Label>
               <Select

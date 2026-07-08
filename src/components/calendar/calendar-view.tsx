@@ -6,6 +6,7 @@ import {
   endOfMonth,
   endOfWeek,
   format,
+  parseISO,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
@@ -14,10 +15,11 @@ import { Button } from "@/components/ui/button";
 import { Sheet } from "@/components/ui/sheet";
 import { CalendarMonthView } from "./calendar-month-view";
 import { CalendarWeekView } from "./calendar-week-view";
-import { CalendarDayView } from "./calendar-day-view";
+import { DayTimeline } from "./day-timeline";
 import { EventForm } from "./event-form";
 import { EventDetailSheet } from "./event-detail-sheet";
 import { fetchEventsInRange } from "@/lib/calendar/actions";
+import { appDayRange } from "@/lib/date";
 import type { CalendarViewMode } from "@/lib/calendar/constants";
 import type {
   CalendarEventWithRelations,
@@ -43,7 +45,7 @@ export function CalendarView({
   options,
 }: CalendarViewProps) {
   const router = useRouter();
-  const [currentDate, setCurrentDate] = useState(new Date(initialDate));
+  const [currentDate, setCurrentDate] = useState(() => parseISO(initialDate));
   const [view, setView] = useState<CalendarViewMode>("month");
   const [events, setEvents] = useState(initialEvents);
   const [createOpen, setCreateOpen] = useState(false);
@@ -55,27 +57,27 @@ export function CalendarView({
 
   const loadEvents = useCallback(
     (date: Date, mode: CalendarViewMode) => {
-      let start: Date;
-      let end: Date;
+      let startISO: string;
+      let endISO: string;
 
       if (mode === "month") {
-        start = startOfWeek(startOfMonth(date), { weekStartsOn: 0 });
-        end = endOfWeek(endOfMonth(date), { weekStartsOn: 0 });
+        startISO = startOfWeek(startOfMonth(date), {
+          weekStartsOn: 0,
+        }).toISOString();
+        endISO = endOfWeek(endOfMonth(date), { weekStartsOn: 0 }).toISOString();
       } else if (mode === "week") {
-        start = startOfWeek(date, { weekStartsOn: 0 });
-        end = endOfWeek(date, { weekStartsOn: 0 });
+        startISO = startOfWeek(date, { weekStartsOn: 0 }).toISOString();
+        endISO = endOfWeek(date, { weekStartsOn: 0 }).toISOString();
       } else {
-        start = new Date(date);
-        start.setHours(0, 0, 0, 0);
-        end = new Date(date);
-        end.setHours(23, 59, 59, 999);
+        // Day view: anchor boundaries to the app timezone so the timeline
+        // matches Meu Dia exactly.
+        const range = appDayRange(format(date, "yyyy-MM-dd"));
+        startISO = range.startISO;
+        endISO = range.endISO;
       }
 
       startTransition(async () => {
-        const data = await fetchEventsInRange(
-          start.toISOString(),
-          end.toISOString(),
-        );
+        const data = await fetchEventsInRange(startISO, endISO);
         setEvents(data);
       });
     },
@@ -192,11 +194,17 @@ export function CalendarView({
       )}
 
       {view === "day" && (
-        <CalendarDayView
-          currentDate={currentDate}
+        <DayTimeline
+          heading="Dia"
+          date={currentDate}
           events={events}
+          options={options}
           onDateChange={handleDateChange}
           onEventClick={handleEventClick}
+          onChanged={() => {
+            loadEvents(currentDate, "day");
+            router.refresh();
+          }}
         />
       )}
 

@@ -10,7 +10,11 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { toggleHabitToday, updateHabitLogValue } from "@/lib/habits/actions";
 import { formatHabitTarget, isLogComplete } from "@/lib/habits/stats";
-import { HABIT_UNIT_LABELS, type HabitUnit } from "@/lib/habits/constants";
+import {
+  HABIT_UNIT_LABELS,
+  HABIT_UNIT_STEPS,
+  type HabitUnit,
+} from "@/lib/habits/constants";
 import type { HabitWithStats } from "@/lib/habits/types";
 
 type HabitCardProps = {
@@ -109,7 +113,7 @@ export function HabitCard({ habit, onClick }: HabitCardProps) {
             <Input
               type="number"
               min={0}
-              step={habit.target_unit === "chapters" ? 1 : 5}
+              step={HABIT_UNIT_STEPS[habit.target_unit as HabitUnit] ?? 1}
               placeholder={`0 / ${habit.target_value} ${HABIT_UNIT_LABELS[habit.target_unit as HabitUnit] ?? habit.target_unit}`}
               value={valueInput}
               onChange={(e) => setValueInput(e.target.value)}

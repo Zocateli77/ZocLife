@@ -142,7 +142,7 @@ export function TaskForm({
 
       {showFull ? (
         <>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="status">Status</Label>
               <Select
@@ -173,7 +173,7 @@ export function TaskForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="category">Categoria</Label>
               <Select
@@ -205,7 +205,7 @@ export function TaskForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="due_date">Data limite</Label>
               <Input
@@ -283,7 +283,7 @@ export function TaskForm({
           )}
         </>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="due_date_quick">Data</Label>
             <Input

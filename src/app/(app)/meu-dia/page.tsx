@@ -1,21 +1,21 @@
-import { format } from "date-fns";
 import {
   getCalendarFormOptions,
-  getDayEvents,
+  getDayEventsByString,
 } from "@/lib/calendar/queries";
+import { getTodayInAppTz } from "@/lib/date";
 import { DayPlannerView } from "@/components/calendar/day-planner-view";
 
 export default async function MeuDiaPage() {
-  const now = new Date();
+  const today = getTodayInAppTz();
   const [events, options] = await Promise.all([
-    getDayEvents(now),
+    getDayEventsByString(today),
     getCalendarFormOptions(),
   ]);
 
   return (
     <DayPlannerView
       initialEvents={events}
-      initialDate={format(now, "yyyy-MM-dd")}
+      initialDate={today}
       options={options}
     />
   );

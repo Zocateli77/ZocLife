@@ -108,7 +108,7 @@ export function HabitForm({
 
       {showFull ? (
         <>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="habit-freq">Frequência</Label>
               <Select
@@ -163,7 +163,7 @@ export function HabitForm({
             </div>
           )}
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             <div className="space-y-2">
               <Label htmlFor="habit-target">Meta numérica</Label>
               <Input
@@ -202,7 +202,7 @@ export function HabitForm({
           </div>
         </>
       ) : (
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           <div className="space-y-2">
             <Label htmlFor="habit-target-q">Meta</Label>
             <Input

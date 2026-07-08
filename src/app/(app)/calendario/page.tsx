@@ -1,21 +1,22 @@
-import { format } from "date-fns";
+import { parseISO } from "date-fns";
 import {
   getCalendarFormOptions,
   getMonthEvents,
 } from "@/lib/calendar/queries";
+import { getTodayInAppTz } from "@/lib/date";
 import { CalendarView } from "@/components/calendar/calendar-view";
 
 export default async function CalendarioPage() {
-  const now = new Date();
+  const today = getTodayInAppTz();
   const [events, options] = await Promise.all([
-    getMonthEvents(now),
+    getMonthEvents(parseISO(today)),
     getCalendarFormOptions(),
   ]);
 
   return (
     <CalendarView
       initialEvents={events}
-      initialDate={format(now, "yyyy-MM-dd")}
+      initialDate={today}
       options={options}
     />
   );

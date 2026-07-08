@@ -59,18 +59,23 @@ export function Sheet({
           className,
         )}
       >
-        <div className="flex items-start justify-between border-b border-border p-5">
-          <div>
+        <div className="flex items-start justify-between gap-3 border-b border-border p-5">
+          <div className="min-w-0 flex-1">
             {title && (
-              <h2 className="font-heading text-lg font-semibold">{title}</h2>
+              <h2 className="font-heading text-lg font-semibold break-words">
+                {title}
+              </h2>
             )}
             {description && (
-              <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+              <p className="mt-1 text-sm text-muted-foreground break-words">
+                {description}
+              </p>
             )}
           </div>
           <Button
             variant="ghost"
             size="icon"
+            className="shrink-0"
             onClick={() => onOpenChange(false)}
             aria-label="Fechar"
           >

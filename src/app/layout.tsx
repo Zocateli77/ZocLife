@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -25,6 +25,11 @@ export const metadata: Metadata = {
   title: "Zoc Life — Painel de Execução Pessoal",
   description:
     "Central pessoal para tarefas, hábitos, treinos, estudos, conteúdo e evolução.",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
 };
 
 export default function RootLayout({

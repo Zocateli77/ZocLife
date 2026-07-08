@@ -1,13 +1,12 @@
 import "server-only";
 import {
-  endOfDay,
   endOfMonth,
   endOfWeek,
-  startOfDay,
   startOfMonth,
   startOfWeek,
 } from "date-fns";
 import { DEFAULT_USER_ID } from "@/lib/auth/constants";
+import { appDayRange, getTodayInAppTz } from "@/lib/date";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 import { expandRecurringEvent } from "./recurrence";
 import type { CalendarEventWithRelations } from "./types";
@@ -106,8 +105,18 @@ export async function getWeekEvents(date: Date) {
   return getEventsInRange(start, end);
 }
 
+/**
+ * Fetches events for a single calendar day identified by a `YYYY-MM-DD` string,
+ * with day boundaries anchored to the app timezone (America/Sao_Paulo) so that
+ * server (UTC) and client agree on which day is being loaded.
+ */
+export async function getDayEventsByString(dateStr: string) {
+  const { startISO, endISO } = appDayRange(dateStr);
+  return getEventsInRange(new Date(startISO), new Date(endISO));
+}
+
 export async function getDayEvents(date: Date) {
-  return getEventsInRange(startOfDay(date), endOfDay(date));
+  return getDayEventsByString(getTodayInAppTz(date));
 }
 
 export async function getEventById(
@@ -127,7 +136,7 @@ export async function getEventById(
 }
 
 export async function getTodayEvents(): Promise<CalendarEventWithRelations[]> {
-  return getDayEvents(new Date());
+  return getDayEventsByString(getTodayInAppTz());
 }
 
 export type DashboardCalendarStats = {

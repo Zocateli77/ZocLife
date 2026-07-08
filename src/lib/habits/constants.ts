@@ -38,6 +38,17 @@ export const HABIT_UNIT_LABELS: Record<HabitUnit, string> = {
   hours: "horas",
 };
 
+export const HABIT_UNIT_STEPS: Record<HabitUnit, number> = {
+  minutes: 5,
+  hours: 0.5,
+  liters: 0.1,
+  pages: 1,
+  chapters: 1,
+  workouts: 1,
+  videos: 1,
+  times: 1,
+};
+
 export const WEEKDAY_LABELS = ["Dom", "Seg", "Ter", "Qua", "Qui", "Sex", "Sáb"];
 
 export const HABIT_COLORS = [
